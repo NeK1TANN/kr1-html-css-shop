@@ -84,16 +84,20 @@ a:focus-visible {
   outline-offset: 3px; 
 } 
 
-
 .site-header {
-  max-width: 1100px;
-  margin: 0 auto;
+  background-color: var(--color-surface);
 }
 
-.site-logo {
-  font-weight: bold;
+.site-header__inner {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+.site-header__logo {
+  font-weight: 700;
+  color: var(--color-text);
   text-decoration: none;
-  color: #222222;
 }
 
 .site-nav__list {
@@ -107,7 +111,7 @@ a:focus-visible {
   list-style: none;
 }
 
-.site-nav__list a {
+.site-nav__link {
   display: inline-block;
   padding: var(--space-sm) var(--space-md);
   color: var(--color-primary);
@@ -115,17 +119,26 @@ a:focus-visible {
   border-radius: var(--radius-sm);
 }
 
-.site-nav__list a:hover {
+.site-nav__link:hover {
   color: var(--color-white);
   background-color: var(--color-primary);
 }
 
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-lg);
+.site-nav__link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
 }
 
+.site-nav__link--active {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+.site-footer__inner {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
 /* =============================== 
    4. Компоненты страницы 
    =============================== */ 
@@ -151,47 +164,87 @@ a:focus-visible {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  margin-bottom: 0;
   padding: var(--space-md);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background-color: var(--color-bg);
 }
 
-.product-card .button {
+.product-card:hover {
+  border-color: var(--color-primary);
+}
+
+.product-card--featured {
+  border-color: var(--color-primary);
+}
+
+.product-card__title {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.product-card__description {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.product-card__price {
+  margin: 0;
+  font-weight: 700;
+}
+
+.product-card--discount .product-card__price {
+  color: var(--color-danger);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.product-card__button {
   margin-top: auto;
   align-self: flex-start;
 }
- 
-.product-card:hover { 
-  border-color: var(--color-primary); 
-} 
- 
-.product-card h3 { 
-  margin-top: 0; 
+
+.button {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.button { 
-  display: inline-block; 
-  padding: var(--space-sm) var(--space-md); 
-  color: var(--color-white); 
-  background-color: var(--color-primary); 
-  text-decoration: none; 
-  border: none; 
-  border-radius: var(--radius-sm); 
-  cursor: pointer; 
-} 
- 
-.button:hover { 
-  background-color: var(--color-primary-dark); 
-} 
- 
+.button--primary {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+.button--primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.button--secondary {
+  color: var(--color-primary);
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+}
+
+.button--secondary:hover {
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
 .button:focus-visible { 
   outline: 2px solid var(--color-primary); 
   outline-offset: 3px; 
 } 
 
-.button:disabled {
+.button:disabled,
+.button--disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -211,11 +264,11 @@ a:focus-visible {
   color: var(--color-muted);
 }
 
-.breadcrumbs a {
+.breadcrumbs__link {
   color: var(--color-primary);
 }
 
-.breadcrumbs span::before {
+.breadcrumbs__current::before {
   content: " / ";
   color: var(--color-muted);
 }
@@ -246,35 +299,6 @@ a:focus-visible {
   grid-area: products;
 }
 
-.filters-form {
-  display: grid;
-  gap: var(--space-md);
-}
-
-.filters-form fieldset {
-  margin: 0;
-  padding: var(--space-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-}
-
-.filters-form legend {
-  font-weight: 700;
-}
-
-.filters-form label {
-  display: block;
-  margin-bottom: var(--space-sm);
-} 
-
-.filters-form input[type="number"] {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  font: inherit;
-}
-
 /* =============================== 
    5. Форма и модальное окно 
    =============================== */ 
@@ -288,43 +312,50 @@ a:focus-visible {
  
 .order-dialog::backdrop { 
   background-color: rgba(0, 0, 0, 0.5); 
-} 
- 
-.form-field { 
-  margin-bottom: var(--space-md); 
-} 
- 
-.form-field label { 
-  display: block; 
-  margin-bottom: var(--space-xs); 
-} 
- 
-.form-field input, 
-.form-field select, 
-.form-field textarea { 
-  width: 100%; 
-  padding: 10px 12px; 
-  border: 1px solid var(--color-border); 
-  border-radius: var(--radius-sm); 
-  font: inherit; 
-} 
- 
-.form-field input[type="checkbox"] { 
-  width: auto; 
-} 
- 
-.form-field small { 
-  display: block; 
-  margin-top: var(--space-xs); 
-  color: var(--color-muted); 
 }
 
-.form-field input:hover, 
-.form-field select:hover, 
-.form-field textarea:hover { 
-  border-color: var(--color-primary); 
-} 
+.order-dialog__title {
+  margin-top: 0;
+}
  
+.order-form__field {
+  margin-bottom: var(--space-md);
+}
+
+.order-form__label {
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.order-form__input,
+.order-form__select,
+.order-form__textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
+
+.order-form__input:hover,
+.order-form__select:hover,
+.order-form__textarea:hover {
+  border-color: var(--color-primary);
+}
+
+.order-form__input:focus-visible,
+.order-form__select:focus-visible,
+.order-form__textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.order-form__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+  
 .form-field input:focus-visible, 
 .form-field select:focus-visible, 
 .form-field textarea:focus-visible, 
@@ -336,12 +367,6 @@ a:focus-visible {
 [aria-invalid="true"] { 
   border-color: var(--color-danger); 
 } 
-
-.form-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
 
 .success-message { 
   max-width: var(--container-width); 
